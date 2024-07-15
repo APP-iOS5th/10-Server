@@ -20,4 +20,17 @@ final class AppTests: XCTestCase {
             XCTAssertEqual(res.body.string, "Hello, world!")
         })
     }
+    
+    func testStudentRoute() async throws {
+        let studentRecords = ["Peter": 3.42, "Thomas": 2.98, "Jane": 3.91, "Ryan": 4.00, "Kyle": 4.00]
+
+        for (studentName, gpa) in studentRecords {
+            try app.test(.GET, "student/\(studentName)") { res in
+                XCTAssertEqual(res.status, .ok)
+                XCTAssertEqual(res.body.string, "The student \(studentName)'s GPA is \(gpa)")
+            }
+        }
+    }
+    
+    
 }
