@@ -1,17 +1,15 @@
 import Vapor
+import Leaf
 
 func routes(_ app: Application) throws {
-    let journalController = JournalController()
-    
-    app.get("old/entries", use: journalController.index)
-    
+        
     app.get { req async in
         "It works!"
     }
 
-    app.get("hello") { req async -> String in
-        req.logger.critical("Received request for /hello")
-        return "Hello, world!"
+    app.get("hello") { req -> EventLoopFuture<View> in
+        req.logger.info("Received request for /hello")
+        return req.view.render("hello", ["name": "Leaf"])
     }
     
     app.get("greet", ":name") { req async -> String in

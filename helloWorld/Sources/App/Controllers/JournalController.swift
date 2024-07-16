@@ -6,6 +6,7 @@
 //
 
 import Vapor
+//import Leaf
 
 struct CreateEntryData: Content {
     let title: String
@@ -17,6 +18,7 @@ struct JournalController: RouteCollection {
     
     func boot(routes: any Vapor.RoutesBuilder) throws {
         let entries = routes.grouped("entries")
+//        entries.get("all", use: getAll)
         entries.get(use: index)
         entries.post(use: create)
         entries.get(":id", use: get)
@@ -24,6 +26,12 @@ struct JournalController: RouteCollection {
         entries.delete(":id", use: delete)
     }
     
+//    @Sendable
+//    func getAll(_ req: Request) async throws -> EventLoopFuture<View>  {
+//        let entries = try await Entry.query(on: req.db).all()
+//        let context = ["entries": entries]
+//        return req.view.render("main", context)
+//    }
     
     // List
     @Sendable
