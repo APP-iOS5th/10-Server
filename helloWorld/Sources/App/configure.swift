@@ -10,6 +10,10 @@ public func configure(_ app: Application) async throws {
     // 데이터베이스 드라이버 로드
     app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
 
+    // // 세션을 데이터베이스에서 관리하도록 설정
+    app.sessions.use(.fluent)
+    app.migrations.add(SessionRecord.migration)
+
     // 마이그레이션 코드 추가
     app.migrations.add(CreateEntry())
     app.migrations.add(CreateAdmin())
@@ -20,6 +24,7 @@ public func configure(_ app: Application) async throws {
 
     // uncomment to serve files from /Public folder
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+    app.middleware.use(app.sessions.middleware)
 
     // Journal Controller 라우터 등록
     try app.register(collection: JournalController())

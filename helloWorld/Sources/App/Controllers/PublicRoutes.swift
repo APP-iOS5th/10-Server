@@ -38,7 +38,7 @@ struct PublicRoutes: RouteCollection {
                     let passwordMatches = try admin.verify(password: user.password)
                     if passwordMatches {
                         req.auth.login(admin)
-                        req.logger.error("\(admin)!!")
+                        req.session.authenticate(admin)
                         return req.eventLoop.future(req.redirect(to: "/dashboard"))
                     } else {
                         return req.eventLoop.future(req.redirect(to: "/login?error=invalidpassword"))
