@@ -1,6 +1,7 @@
 import Vapor
 import Fluent
 import FluentSQLiteDriver
+import Leaf
 
 // configures your application
 public func configure(_ app: Application) async throws {
@@ -11,6 +12,9 @@ public func configure(_ app: Application) async throws {
 
     // 마이그레이션 코드 추가
     app.migrations.add(CreateEntry())
+    
+    // 템플릿 엔진 Leaf 추가
+    app.views.use(.leaf)
 
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
