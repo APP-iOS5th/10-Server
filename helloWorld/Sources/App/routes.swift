@@ -1,6 +1,10 @@
 import Vapor
 
 func routes(_ app: Application) throws {
+    let journalController = JournalController()
+    
+    app.get("entries", use: journalController.index)
+    
     app.get { req async in
         "It works!"
     }
