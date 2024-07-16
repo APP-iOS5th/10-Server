@@ -22,7 +22,7 @@ final class Entry: Model, Content {
     @Field(key: "content")
     var content: String
     
-    init(id: UUID? = nil, title: String, content: String) {
+    init(id: UUID? = UUID(), title: String, content: String) {
         self.id = id
         self.title = title
         self.content = content

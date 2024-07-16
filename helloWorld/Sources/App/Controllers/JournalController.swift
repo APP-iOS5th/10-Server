@@ -7,6 +7,11 @@
 
 import Vapor
 
+struct CreateEntryData: Content {
+    let title: String
+    let content: String
+}
+
 // Entry 모델에 대한 CRUD (Create, Read (Get 1, or List), Update, Delete)
 struct JournalController: RouteCollection {
     
@@ -28,7 +33,14 @@ struct JournalController: RouteCollection {
     
     @Sendable
     func create(req: Request) throws -> EventLoopFuture<Entry> {
-        let entry = try req.content.decode(Entry.self)
+        req.logger.error("----------")
+        req.logger.debug("\(req.content)")
+
+        let entryData = try req.content.decode(CreateEntryData.self)
+        let entry = Entry(title: entryData.title, content: entryData.content)
+        
+        req.logger.debug("\(entry.description)")
+        
         return entry.save(on: req.db).map { entry }
     }
     
