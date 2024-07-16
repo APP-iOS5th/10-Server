@@ -1,0 +1,11 @@
+#extend("base"):
+  #export("content"):
+    <div class="container mt-5">
+      <h1>Welcome, #(name)!</h1>
+      <p>This is your protected dashboard.</p>
+      <form method="POST" action="/logout">
+        <button type="submit" class="btn btn-danger">Logout</button>
+      </form>
+    </div>
+  #endexport
+#endextend

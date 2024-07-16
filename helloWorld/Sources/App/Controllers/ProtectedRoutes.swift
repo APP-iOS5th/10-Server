@@ -15,9 +15,12 @@ struct ProtectedRoutes: RouteCollection {
     
     @Sendable
     func dashboardHandler(_ req: Request) throws -> EventLoopFuture<View> {
+        req.logger.error("=====")
         guard let user = try? req.auth.require(Admin.self) else {
+            req.logger.error("aunauthorized!!!")
             throw Abort(.unauthorized)
         }
+        req.logger.debug("GO!!!!")
         return req.view.render("dashboard", ["name": user.name])
     }
 
