@@ -20,7 +20,7 @@ final class AppTests: XCTestCase {
             XCTAssertEqual(res.body.string, "Hello, world!")
         })
     }
-    
+
     func testStudentRoute() async throws {
         // Arrange
         let studentRecords = ["Peter": 3.42, "Thomas": 2.98, "Jane": 3.91, "Ryan": 4.00, "Kyle": 4.00]
@@ -34,6 +34,4 @@ final class AppTests: XCTestCase {
             }
         }
     }
-    
-    
 }
