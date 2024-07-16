@@ -18,12 +18,18 @@ public func configure(_ app: Application) async throws {
 
     // uncomment to serve files from /Public folder
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
-    
+
     // Journal Controller 라우터 등록
     try app.register(collection: JournalController())
 
     // register routes
     try routes(app)
+
+    let protected = app.grouped(UserAuthenticator())
+    protected.get("me") { req -> String in
+        try req.auth.require(User.self).name
+    }
+
     
     // 마이그레이션 코드 실행 ( 개발 모드에서만 실행할 것! )
     try await app.autoMigrate().get()
