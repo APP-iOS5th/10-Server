@@ -2,11 +2,15 @@ import Vapor
 import Fluent
 import FluentSQLiteDriver
 import Leaf
+import JWT
 
 // configures your application
 public func configure(_ app: Application) async throws {
     app.logger.logLevel = .debug
     
+    // Add HMAC with SHA-256 signer.
+    app.jwt.signers.use(.hs256(key: "your-secret-key"))  // 실제 운영 환경에서는 환경 변수 등을 통해 안전하게 관리해야 합니다.
+
     // 데이터베이스 드라이버 로드
     app.databases.use(.sqlite(.file("db.sqlite")), as: .sqlite)
 

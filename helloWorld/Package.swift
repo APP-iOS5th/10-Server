@@ -17,12 +17,15 @@ let package = Package(
         .package(url: "https://github.com/vapor/fluent-sqlite-driver.git", from: "4.0.0"),
         // 템플릿 엔진 Leaf 의존성 추가
         .package(url: "https://github.com/vapor/leaf.git", from: "4.0.0"),
+        // JWT 라이브러리
+        .package(url: "https://github.com/vapor/jwt.git", from: "4.0.0"),
     ],
     targets: [
         .executableTarget(
             name: "App",
             dependencies: [
                 // 라이브러리 임포트 설정
+                .product(name: "JWT", package: "jwt"),
                 .product(name: "Leaf", package: "leaf"),
                 .product(name: "Fluent", package: "fluent"),
                 .product(name: "FluentSQLiteDriver", package: "fluent-sqlite-driver"),
