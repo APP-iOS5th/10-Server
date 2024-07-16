@@ -17,6 +17,8 @@ public func configure(_ app: Application) async throws {
     // register routes
     try routes(app)
     
+    try app.register(collection: JournalController())
+
     // 마이그레이션 코드 실행 ( 개발 모드에서만 실행할 것! )
     try await app.autoMigrate().get()
 }
