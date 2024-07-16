@@ -1,0 +1,12 @@
+#extend("base"):
+    #export("content"):
+        <h1>Journal Entries</h1>
+        <p>Total Entries: #(count)</p>
+        #for(entry in entries):
+            <div>
+                <h2><a href="/journal/#(entry.id)">#(entry.title)</a></h2>
+                <p>#(entry.content)</p>
+            </div>
+        #endfor
+    #endexport
+#endextend

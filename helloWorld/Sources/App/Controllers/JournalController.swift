@@ -6,11 +6,16 @@
 //
 
 import Vapor
-//import Leaf
+import Leaf
 
 struct CreateEntryData: Content {
     let title: String
     let content: String
+}
+
+struct IndexContext: Encodable {
+    let entries: [Entry]
+    let count: Int
 }
 
 // Entry 모델에 대한 CRUD (Create, Read (Get 1, or List), Update, Delete)
@@ -18,26 +23,30 @@ struct JournalController: RouteCollection {
     
     func boot(routes: any Vapor.RoutesBuilder) throws {
         let entries = routes.grouped("entries")
-//        entries.get("all", use: getAll)
         entries.get(use: index)
         entries.post(use: create)
         entries.get(":id", use: get)
         entries.put(":id", use: update)
         entries.delete(":id", use: delete)
     }
-    
-//    @Sendable
-//    func getAll(_ req: Request) async throws -> EventLoopFuture<View>  {
-//        let entries = try await Entry.query(on: req.db).all()
-//        let context = ["entries": entries]
-//        return req.view.render("main", context)
-//    }
-    
+
     // List
     @Sendable
-    func index(req: Request) throws -> EventLoopFuture<[Entry]> {
-        return Entry.query(on: req.db).all()
+    func index(req: Request) async throws -> Response {
+        let entries = try await Entry.query(on: req.db).all()
+        
+        if req.headers.accept.mediaTypes.contains(.html) {
+            let context = IndexContext(entries: entries, count: entries.count)
+            let view = req.view.render("index", context)
+            return try await view.encodeResponse(for: req).get()
+        } else {
+            return try await entries.encodeResponse(for: req)
+        }
     }
+//    @Sendable
+//    func index(req: Request) throws -> EventLoopFuture<[Entry]> {
+//        return Entry.query(on: req.db).all()
+//    }
     
     @Sendable
     func create(req: Request) throws -> EventLoopFuture<Entry> {
