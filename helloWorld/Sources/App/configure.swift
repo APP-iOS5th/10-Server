@@ -33,6 +33,9 @@ public func configure(_ app: Application) async throws {
     // Journal Controller 라우터 등록
     try app.register(collection: JournalController())
 
+    // API 라우터 등록
+    try app.register(collection: APIRoutes(app: app))
+
     // register routes
     try routes(app)
 
