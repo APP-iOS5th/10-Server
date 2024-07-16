@@ -17,7 +17,7 @@ public func configure(_ app: Application) async throws {
     app.views.use(.leaf)
 
     // uncomment to serve files from /Public folder
-    // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
+    app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     
     // Journal Controller 라우터 등록
     try app.register(collection: JournalController())
