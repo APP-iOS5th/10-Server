@@ -10,6 +10,8 @@ import SwiftUI
 struct EntryListView: View {
     @EnvironmentObject var viewModel: EntryViewModel
     
+    @State var isAdding = false
+    
     var body: some View {
         NavigationStack {
             List {
@@ -34,14 +36,18 @@ struct EntryListView: View {
                     }
                 }
             }
+            .navigationDestination(isPresented: $isAdding) {
+                AddEntryView()
+            }
         }
         .onAppear {
+            print("HERE!")
             viewModel.fetchEntries()
         }
     }
     
     private func addEntry() {
-        viewModel.createEntry(title: "New Entry", content: "Content")
+        self.isAdding.toggle()
     }
     
     private func deleteEntry(at offsets: IndexSet) {

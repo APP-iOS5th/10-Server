@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct EntryDetailView: View {
+    @Environment(\.dismiss) var dismiss
     @State var entry: Entry
     @EnvironmentObject var viewModel: EntryViewModel
     
@@ -19,6 +20,7 @@ struct EntryDetailView: View {
         .navigationTitle(entry.title)
         .navigationBarItems(trailing: Button("Save") {
             viewModel.updateEntry(entry)
+            dismiss()
         })
     }
 }

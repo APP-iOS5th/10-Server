@@ -36,8 +36,11 @@ struct APIRoutes: RouteCollection {
         guard try admin.verify(password: loginRequest.password) else {
             throw Abort(.unauthorized)
         }
-        
-        return try self.authService.createToken(for: admin)
+        req.logger.debug("================")
+        req.logger.debug("\(admin.name)")
+        let token = try self.authService.createToken(for: admin)
+        req.logger.debug("token: \(token)")
+        return token
     }
 
     @Sendable

@@ -51,7 +51,6 @@ class RealEntryService: EntryService {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        print("-----1------\(url)")
 
         // 로그인 정보를 JSON으로 인코딩합니다.
         let body = ["name": username, "password": password]

@@ -24,7 +24,7 @@
 		37F4DC282C48A18E00A6C3B4 /* EntryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F4DC272C48A18E00A6C3B4 /* EntryService.swift */; };
 		37F4DC2A2C48A1B300A6C3B4 /* MockEntryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F4DC292C48A1B300A6C3B4 /* MockEntryService.swift */; };
 		37F4DC2D2C48A28000A6C3B4 /* RealEntryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F4DC2C2C48A28000A6C3B4 /* RealEntryService.swift */; };
-		37F4DC2F2C48A2A200A6C3B4 /* LoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F4DC2E2C48A2A200A6C3B4 /* LoginResponse.swift */; };
+		37F4DC322C48CEBB00A6C3B4 /* AddEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F4DC312C48CEBB00A6C3B4 /* AddEntryView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,8 +65,8 @@
 		37F4DC272C48A18E00A6C3B4 /* EntryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryService.swift; sourceTree = "<group>"; };
 		37F4DC292C48A1B300A6C3B4 /* MockEntryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockEntryService.swift; sourceTree = "<group>"; };
 		37F4DC2C2C48A28000A6C3B4 /* RealEntryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEntryService.swift; sourceTree = "<group>"; };
-		37F4DC2E2C48A2A200A6C3B4 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
 		37F4DC302C48B3AF00A6C3B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		37F4DC312C48CEBB00A6C3B4 /* AddEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,7 +160,6 @@
 			children = (
 				37F4DC172C489B1B00A6C3B4 /* Entry.swift */,
 				37F4DC192C489B3600A6C3B4 /* LoginRequest.swift */,
-				37F4DC2E2C48A2A200A6C3B4 /* LoginResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -173,6 +172,7 @@
 				37F4DC1D2C489B7300A6C3B4 /* LoginView.swift */,
 				37F4DC212C489B9200A6C3B4 /* EntryListView.swift */,
 				37F4DC232C489DFD00A6C3B4 /* EntryDetailView.swift */,
+				37F4DC312C48CEBB00A6C3B4 /* AddEntryView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -326,8 +326,8 @@
 			files = (
 				37F4DC282C48A18E00A6C3B4 /* EntryService.swift in Sources */,
 				37F4DC1E2C489B7300A6C3B4 /* LoginView.swift in Sources */,
-				37F4DC2F2C48A2A200A6C3B4 /* LoginResponse.swift in Sources */,
 				37F4DC182C489B1B00A6C3B4 /* Entry.swift in Sources */,
+				37F4DC322C48CEBB00A6C3B4 /* AddEntryView.swift in Sources */,
 				37F4DC1C2C489B6400A6C3B4 /* EntryViewModel.swift in Sources */,
 				37F4DBEF2C4898D100A6C3B4 /* ContentView.swift in Sources */,
 				37F4DBED2C4898D100A6C3B4 /* EntryAppApp.swift in Sources */,

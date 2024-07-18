@@ -8,11 +8,25 @@
 import SwiftUI
 
 struct AddEntryView: View {
+    @Environment(\.dismiss) var dismiss
+    @State var title = ""
+    @State var content = ""
+    @EnvironmentObject var viewModel: EntryViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form {
+            TextField("Title", text: $title)
+            TextEditor(text: $content)
+        }
+        .navigationTitle(title.isEmpty ? "New Entry" : title)
+        .navigationBarItems(trailing: Button("Save") {
+            guard !title.isEmpty, !content.isEmpty else {
+                print("title content empty")
+                return
+            }
+            viewModel.createEntry(title: title, content: content)
+            dismiss()
+        })
     }
 }
 
-#Preview {
-    AddEntryView()
-}

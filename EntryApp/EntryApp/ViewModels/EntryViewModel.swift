@@ -93,6 +93,7 @@ class EntryViewModel: ObservableObject {
                 receiveValue: { [weak self] (updatedEntry: Entry) in
                     if let index = self?.entries.firstIndex(where: { $0.id == updatedEntry.id }) {
                         DispatchQueue.main.async {
+                            print("index: \(index)!!!!")
                             self?.entries[index] = updatedEntry
                         }
                     }

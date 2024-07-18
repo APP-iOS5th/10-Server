@@ -21,4 +21,10 @@ struct Entry: Identifiable, Codable, Hashable {
     static func == (lhs: Entry, rhs: Entry) -> Bool {
         lhs.id == rhs.id
     }
+    
+    init(id: UUID = UUID(), title: String, content: String) {
+        self.id = id
+        self.title = title
+        self.content = content
+    }
 }

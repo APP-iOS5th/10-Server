@@ -7,6 +7,7 @@
 
 import XCTest
 
+
 class EntryAppUITests: XCTestCase {
     let app = XCUIApplication()
 
@@ -17,7 +18,8 @@ class EntryAppUITests: XCTestCase {
 
     func testLoginFlow() throws {
         // "Have an account already? Log in." 버튼을 탭합니다.
-        app.buttons["Have an account already? Log in."].tap()
+        let loginButton = app.buttons["Have an account already? Log in."]
+        loginButton.tap()
 
         // 사용자 이름과 비밀번호를 입력합니다.
         let usernameTextField = app.textFields["Username"]
@@ -30,10 +32,20 @@ class EntryAppUITests: XCTestCase {
         passwordSecureTextField.typeText("secret")
 
         // 로그인 버튼을 탭합니다.
-        app.buttons["Log in"].tap()
+        let signInButton = app.buttons["Log in"]
+        signInButton.tap()
 
         // 로그인 후 EntryListView로 이동했는지 확인합니다.
-        XCTAssertTrue(app.navigationBars["Entries"].exists)
+        let entriesNavBar = app.navigationBars["Entries"]
+        let exists = entriesNavBar.waitForExistence(timeout: 10)
+        
+        if !exists {
+            // 실패 시 더 자세한 정보를 얻기 위해 현재 화면의 요소들을 출력합니다.
+            print("Current screen elements:")
+            print(app.debugDescription)
+        }
+
+        XCTAssertTrue(exists, "Failed to navigate to Entries view after login")
     }
 
     func testCreateEntry() throws {
@@ -42,6 +54,9 @@ class EntryAppUITests: XCTestCase {
 
         // "Add" 버튼을 탭합니다.
         app.navigationBars["Entries"].buttons["Add"].tap()
+
+        // 처음 Add 페이지 진입시 New Entry 타이틀 표시
+        XCTAssertEqual(app.navigationBars["New Entry"].exists, true)
 
         // 제목과 내용을 입력합니다.
         let titleTextField = app.textFields.firstMatch
@@ -57,7 +72,16 @@ class EntryAppUITests: XCTestCase {
         app.navigationBars.buttons["Save"].tap()
 
         // 새로 생성된 엔트리가 목록에 표시되는지 확인합니다.
-        XCTAssertTrue(app.staticTexts["Test Entry"].exists)
+        let entriesNavBar = app.staticTexts["Test Entry"]
+        let exists = entriesNavBar.waitForExistence(timeout: 10)
+        
+        if !exists {
+            // 실패 시 더 자세한 정보를 얻기 위해 현재 화면의 요소들을 출력합니다.
+            print("Current screen elements:")
+            print(app.debugDescription)
+        }
+
+        XCTAssertTrue(exists, "새로 생성된 엔트리가 목록에 표시되지 않음")
     }
 
     func testUpdateEntry() throws {
@@ -65,7 +89,7 @@ class EntryAppUITests: XCTestCase {
         try testCreateEntry()
 
         // 생성된 엔트리를 탭합니다.
-        app.staticTexts["Test Entry"].tap()
+        app.staticTexts["Test Entry"].firstMatch.tap()
 
         // 제목을 수정합니다.
         let titleTextField = app.textFields.firstMatch
@@ -76,15 +100,24 @@ class EntryAppUITests: XCTestCase {
         app.navigationBars.buttons["Save"].tap()
 
         // 수정된 엔트리가 목록에 표시되는지 확인합니다.
-        XCTAssertTrue(app.staticTexts["Updated Test Entry"].exists)
+        let entriesNavBar = app.staticTexts["Updated Test Entry"]
+        let exists = entriesNavBar.waitForExistence(timeout: 10)
+        
+        if !exists {
+            // 실패 시 더 자세한 정보를 얻기 위해 현재 화면의 요소들을 출력합니다.
+            print("Current screen elements:")
+            print(app.debugDescription)
+        }
+
+        XCTAssertTrue(exists, "수정된 엔트리가 목록에 표시되지 않음")
     }
 
     func testDeleteEntry() throws {
         // 먼저 로그인하고 엔트리를 생성합니다.
         try testCreateEntry()
-
+        
         // 생성된 엔트리를 왼쪽으로 스와이프하여 삭제합니다.
-        let entryCell = app.staticTexts["Test Entry"]
+        let entryCell = app.staticTexts["Test Entry"].firstMatch
         entryCell.swipeLeft()
         app.buttons["Delete"].tap()
 
