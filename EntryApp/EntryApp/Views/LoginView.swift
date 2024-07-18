@@ -36,10 +36,6 @@ struct LoginView: View {
     }
 }
 
-#Preview {
-    LoginView(viewModel: EntryViewModel())
-}
-
 struct SocialLoginButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label

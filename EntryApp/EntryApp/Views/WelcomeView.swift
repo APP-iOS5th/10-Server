@@ -57,7 +57,3 @@ struct WelcomeView: View {
         }
     }
 }
-
-#Preview {
-    WelcomeView(viewModel: EntryViewModel())
-}

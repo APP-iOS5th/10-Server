@@ -51,7 +51,3 @@ struct EntryListView: View {
         }
     }
 }
-
-#Preview {
-    EntryListView(viewModel: EntryViewModel())
-}

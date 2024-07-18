@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var viewModel = EntryViewModel()
+    @StateObject private var viewModel: EntryViewModel
     
+    init() {
+        // 실제 서비스 구현체를 생성합니다.
+        let service = RealEntryService()
+        // EntryViewModel을 StateObject로 초기화합니다.
+        _viewModel = StateObject(wrappedValue: EntryViewModel(service: service))
+    }
+
     var body: some View {
         if viewModel.isLoggedIn {
             EntryListView(viewModel: viewModel)

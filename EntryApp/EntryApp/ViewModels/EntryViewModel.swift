@@ -8,163 +8,93 @@
 import Foundation
 import Combine
 
+// EntryViewModel: 앱의 비즈니스 로직을 처리하는 뷰모델 클래스
 class EntryViewModel: ObservableObject {
+    // 엔트리 목록을 저장하고 변경을 관찰할 수 있는 @Published 프로퍼티
     @Published var entries: [Entry] = []
+    // 로그인 상태를 저장하고 변경을 관찰할 수 있는 @Published 프로퍼티
     @Published var isLoggedIn = false
+    // EntryService 프로토콜을 따르는 서비스 객체
+    private var service: EntryService
+    // Combine 구독을 저장하는 Set
     private var cancellables = Set<AnyCancellable>()
-    private let baseURL = "http://localhost:8080/api"
-    private var authToken: String?
-    
+
+    // 생성자: EntryService를 주입받아 초기화합니다.
+    init(service: EntryService) {
+        self.service = service
+    }
+
+    // 로그인 기능
     func login(username: String, password: String) {
-        let loginRequest = LoginRequest(name: username, password: password)
-        
-        guard let url = URL(string: "\(baseURL)/login") else { return }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        do {
-            request.httpBody = try JSONEncoder().encode(loginRequest)
-        } catch {
-            print("Error encoding login request: \(error)")
-            return
-        }
-        
-        URLSession.shared.dataTaskPublisher(for: request)
-            .map { $0.data }
-            .decode(type: String.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Login error: \(error)")
+        service.login(username: username, password: password)
+            .sink(
+                receiveCompletion: { [weak self] (completion: Subscribers.Completion<Error>) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        // 로그인 실패 시 에러 처리
+                        print("Login failed: \(error.localizedDescription)")
+                        self?.isLoggedIn = false
+                    }
+                },
+                receiveValue: { [weak self] (token: String) in
+                    // 로그인 성공 시 isLoggedIn을 true로 설정
+                    self?.isLoggedIn = true
+                    print("Login successful. Token: \(token)")
                 }
-            } receiveValue: { [weak self] token in
-                self?.authToken = token
-                self?.isLoggedIn = true
-            }
+            )
             .store(in: &cancellables)
     }
-    
+
+    // 로그아웃 기능
     func logout() {
-        authToken = nil
+        // 로그아웃 시 isLoggedIn을 false로 설정하고 엔트리 목록을 비웁니다.
         isLoggedIn = false
         entries = []
     }
-    
+
+    // 엔트리 목록 가져오기 기능
     func fetchEntries() {
-        guard let url = URL(string: "\(baseURL)/entries") else { return }
-        
-        var request = URLRequest(url: url)
-        request.setValue("Bearer \(authToken ?? "")", forHTTPHeaderField: "Authorization")
-        
-        URLSession.shared.dataTaskPublisher(for: request)
-            .map { $0.data }
-            .decode(type: [Entry].self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Fetch entries error: \(error)")
-                }
-            } receiveValue: { [weak self] entries in
-                self?.entries = entries
-            }
+        service.fetchEntries()
+            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] fetchedEntries in
+                // 가져온 엔트리 목록으로 entries를 업데이트합니다.
+                self?.entries = fetchedEntries
+            })
             .store(in: &cancellables)
     }
-    
+
+    // 새 엔트리 생성 기능
     func createEntry(title: String, content: String) {
-        let newEntry = Entry(id: UUID(), title: title, content: content)
-        
-        guard let url = URL(string: "\(baseURL)/entries") else { return }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(authToken ?? "")", forHTTPHeaderField: "Authorization")
-        
-        do {
-            request.httpBody = try JSONEncoder().encode(newEntry)
-        } catch {
-            print("Error encoding new entry: \(error)")
-            return
-        }
-        
-        URLSession.shared.dataTaskPublisher(for: request)
-            .map { $0.data }
-            .decode(type: Entry.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Create entry error: \(error)")
-                }
-            } receiveValue: { [weak self] entry in
-                self?.entries.append(entry)
-            }
+        service.createEntry(title: title, content: content)
+            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] newEntry in
+                // 새로 생성된 엔트리를 entries 배열에 추가합니다.
+                self?.entries.append(newEntry)
+            })
             .store(in: &cancellables)
     }
-    
+
+    // 엔트리 업데이트 기능
     func updateEntry(_ entry: Entry) {
-        guard let url = URL(string: "\(baseURL)/entries/\(entry.id)") else { return }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "PUT"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(authToken ?? "")", forHTTPHeaderField: "Authorization")
-        
-        do {
-            request.httpBody = try JSONEncoder().encode(entry)
-        } catch {
-            print("Error encoding updated entry: \(error)")
-            return
-        }
-        
-        URLSession.shared.dataTaskPublisher(for: request)
-            .map { $0.data }
-            .decode(type: Entry.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Update entry error: \(error)")
+        service.updateEntry(entry)
+            .sink(
+                receiveCompletion: { _ in },
+                receiveValue: { [weak self] (updatedEntry: Entry) in
+                    if let index = self?.entries.firstIndex(where: { $0.id == updatedEntry.id }) {
+                        self?.entries[index] = updatedEntry
+                    }
                 }
-            } receiveValue: { [weak self] updatedEntry in
-                if let index = self?.entries.firstIndex(where: { $0.id == updatedEntry.id }) {
-                    self?.entries[index] = updatedEntry
-                }
-            }
+            )
             .store(in: &cancellables)
     }
     
+    // 엔트리 삭제 기능
     func deleteEntry(_ entry: Entry) {
-        guard let url = URL(string: "\(baseURL)/entries/\(entry.id)") else { return }
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "DELETE"
-        request.setValue("Bearer \(authToken ?? "")", forHTTPHeaderField: "Authorization")
-        
-        URLSession.shared.dataTaskPublisher(for: request)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Delete entry error: \(error)")
-                }
-            } receiveValue: { [weak self] _ in
+        service.deleteEntry(entry)
+            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] in
+                // 삭제된 엔트리를 entries 배열에서 제거합니다.
                 self?.entries.removeAll { $0.id == entry.id }
-            }
+            })
             .store(in: &cancellables)
     }
 }
