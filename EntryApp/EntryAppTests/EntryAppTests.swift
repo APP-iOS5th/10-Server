@@ -73,7 +73,7 @@ class EntryViewModelTests: XCTestCase {
         viewModel.$isLoggedIn
             .dropFirst() // 초기값 무시
             .sink { isLoggedIn in
-                // isLoggedIn이 true로 변경되었는지 확인
+                // isLoggedIn이 false로 변경되었는지 확인
                 XCTAssertFalse(isLoggedIn)
                 expectation.fulfill()
             }

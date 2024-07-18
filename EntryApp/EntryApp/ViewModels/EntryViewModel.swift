@@ -78,10 +78,8 @@ class EntryViewModel: ObservableObject {
     func logout() {
         // 로그아웃 시 isLoggedIn을 false로 설정하고 엔트리 목록을 비웁니다.
         TokenManager.shared.deleteToken()
-        DispatchQueue.main.async { [weak self] in
-            self?.isLoggedIn = false
-            self?.entries = []
-        }
+        self.isLoggedIn = false
+        self.entries = []
     }
 
     // 엔트리 목록 가져오기 기능

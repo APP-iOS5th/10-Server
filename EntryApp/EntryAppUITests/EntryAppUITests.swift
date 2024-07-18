@@ -55,7 +55,7 @@ class EntryAppUITests: XCTestCase {
         XCTAssertTrue(exists, "Failed to navigate to Entries view after login")
     }
 
-    func testCreateEntry() throws {
+    func testCreateEntry(cleanup: Bool = true) throws {
         // 먼저 로그인합니다.
         try testLoginFlow()
 
@@ -89,11 +89,23 @@ class EntryAppUITests: XCTestCase {
         }
 
         XCTAssertTrue(exists, "새로 생성된 엔트리가 목록에 표시되지 않음")
+        // 완료 후 엔트리 삭제
+        if cleanup {
+            // 생성된 엔트리를 왼쪽으로 스와이프하여 삭제합니다.
+            let entryCell = app.staticTexts["Test Entry"].firstMatch
+            entryCell.swipeLeft()
+            app.buttons["Delete"].tap()
+            
+            // 삭제된 엔트리가 목록에서 사라졌는지 확인합니다.
+            XCTAssertFalse(app.staticTexts["Test Entry"].exists)
+        }
     }
 
     func testUpdateEntry() throws {
         // 먼저 로그인하고 엔트리를 생성합니다.
-        try testCreateEntry()
+        try testCreateEntry(cleanup: false)
+
+        XCTAssertTrue(app.staticTexts["Test Entry"].waitForExistence(timeout: 5))
 
         // 생성된 엔트리를 탭합니다.
         app.staticTexts["Test Entry"].firstMatch.tap()
@@ -117,12 +129,19 @@ class EntryAppUITests: XCTestCase {
         }
 
         XCTAssertTrue(exists, "수정된 엔트리가 목록에 표시되지 않음")
+        // 생성된 엔트리를 왼쪽으로 스와이프하여 삭제합니다.
+        let entryCell = app.staticTexts["Updated Test Entry"].firstMatch
+        entryCell.swipeLeft()
+        app.buttons["Delete"].tap()
+
+        // 삭제된 엔트리가 목록에서 사라졌는지 확인합니다.
+        XCTAssertFalse(app.staticTexts["Test Entry"].exists)
+
     }
 
     func testDeleteEntry() throws {
         // 먼저 로그인하고 엔트리를 생성합니다.
-        try testCreateEntry()
-        
+        try testCreateEntry(cleanup: false)
         // 생성된 엔트리를 왼쪽으로 스와이프하여 삭제합니다.
         let entryCell = app.staticTexts["Test Entry"].firstMatch
         entryCell.swipeLeft()
