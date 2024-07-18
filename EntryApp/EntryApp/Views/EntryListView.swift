@@ -42,7 +42,6 @@ struct EntryListView: View {
             }
         }
         .onAppear {
-            print("HERE!")
             viewModel.fetchEntries()
         }
     }

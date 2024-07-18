@@ -78,7 +78,6 @@ class RealEntryService: EntryService {
                 return token
             }
             .handleEvents(receiveOutput: { [weak self] token in
-                print("Received token: \(token)")
                 self?.authToken = token // 받은 토큰을 저장합니다.
             })
             .eraseToAnyPublisher()

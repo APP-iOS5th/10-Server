@@ -66,9 +66,7 @@ class EntryViewModel: ObservableObject {
                         self?.service.setAuthToken(token)
                         TokenManager.shared.saveToken(token)
                         self?.isLoggedIn = true
-                    }
-                    print("Login successful. Token: \(token)")
-                        
+                    }                        
                 }
             )
             .store(in: &cancellables)
@@ -114,7 +112,6 @@ class EntryViewModel: ObservableObject {
                 receiveValue: { [weak self] (updatedEntry: Entry) in
                     if let index = self?.entries.firstIndex(where: { $0.id == updatedEntry.id }) {
                         DispatchQueue.main.async {
-                            print("index: \(index)!!!! \(updatedEntry.content)")
                             self?.entries[index] = updatedEntry
                         }
                     }
