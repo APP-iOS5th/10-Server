@@ -11,20 +11,29 @@ struct EntryListView: View {
     @ObservedObject var viewModel: EntryViewModel
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 ForEach(viewModel.entries) { entry in
-                    NavigationLink(destination: EntryDetailView(entry: entry, viewModel: viewModel)) {
+                    NavigationLink(value: entry) {
                         Text(entry.title)
                     }
                 }
                 .onDelete(perform: deleteEntry)
             }
             .navigationTitle("Entries")
-            .navigationBarItems(trailing: Button("Add", action: addEntry))
-            .navigationBarItems(leading: Button("Log out") {
-                viewModel.logout()
-            })
+            .navigationDestination(for: Entry.self) { entry in
+                EntryDetailView(entry: entry, viewModel: viewModel)
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Add", action: addEntry)
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Log out") {
+                        viewModel.logout()
+                    }
+                }
+            }
         }
         .onAppear {
             viewModel.fetchEntries()
