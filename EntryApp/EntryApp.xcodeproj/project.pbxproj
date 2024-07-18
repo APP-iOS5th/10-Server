@@ -66,6 +66,7 @@
 		37F4DC292C48A1B300A6C3B4 /* MockEntryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockEntryService.swift; sourceTree = "<group>"; };
 		37F4DC2C2C48A28000A6C3B4 /* RealEntryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEntryService.swift; sourceTree = "<group>"; };
 		37F4DC2E2C48A2A200A6C3B4 /* LoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResponse.swift; sourceTree = "<group>"; };
+		37F4DC302C48B3AF00A6C3B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +117,7 @@
 		37F4DBEB2C4898D100A6C3B4 /* EntryApp */ = {
 			isa = PBXGroup;
 			children = (
+				37F4DC302C48B3AF00A6C3B4 /* Info.plist */,
 				37F4DBEC2C4898D100A6C3B4 /* EntryAppApp.swift */,
 				37F4DC162C489AD400A6C3B4 /* Models */,
 				37F4DC2B2C48A1FF00A6C3B4 /* Services */,
@@ -501,6 +503,7 @@
 				DEVELOPMENT_TEAM = 59FP2PXRXK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EntryApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -530,6 +533,7 @@
 				DEVELOPMENT_TEAM = 59FP2PXRXK;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = EntryApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

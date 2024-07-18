@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EntryDetailView: View {
     @State var entry: Entry
-    @ObservedObject var viewModel: EntryViewModel
+    @EnvironmentObject var viewModel: EntryViewModel
     
     var body: some View {
         Form {

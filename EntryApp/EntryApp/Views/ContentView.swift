@@ -19,9 +19,11 @@ struct ContentView: View {
 
     var body: some View {
         if viewModel.isLoggedIn {
-            EntryListView(viewModel: viewModel)
+            EntryListView()
+                .environmentObject(viewModel)
         } else {
-            WelcomeView(viewModel: viewModel)
+            WelcomeView()
+                .environmentObject(viewModel)
         }
     }
 }

@@ -64,15 +64,26 @@ class EntryViewModelTests: XCTestCase {
     // 로그아웃 기능 테스트
     func testLogout() {
         // 초기 상태 설정: 로그인 상태, 엔트리 존재
+        let expectation = XCTestExpectation(description: "Logout")
         viewModel.isLoggedIn = true
         mockService.entries = [Entry(id: UUID(), title: "Test", content: "Content")]
         viewModel.entries = mockService.entries
+        
+        // isLoggedIn 상태 변화를 관찰
+        viewModel.$isLoggedIn
+            .dropFirst() // 초기값 무시
+            .sink { isLoggedIn in
+                // isLoggedIn이 true로 변경되었는지 확인
+                XCTAssertFalse(isLoggedIn)
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+
 
         // 로그아웃 메서드 호출
         viewModel.logout()
-
-        // 로그아웃 후 상태 검증
-        XCTAssertFalse(viewModel.isLoggedIn)
+                
+        wait(for: [expectation], timeout: 1.0)
         XCTAssertTrue(viewModel.entries.isEmpty)
     }
 

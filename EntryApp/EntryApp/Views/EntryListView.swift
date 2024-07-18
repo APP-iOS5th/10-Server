@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EntryListView: View {
-    @ObservedObject var viewModel: EntryViewModel
+    @EnvironmentObject var viewModel: EntryViewModel
     
     var body: some View {
         NavigationStack {
@@ -22,7 +22,7 @@ struct EntryListView: View {
             }
             .navigationTitle("Entries")
             .navigationDestination(for: Entry.self) { entry in
-                EntryDetailView(entry: entry, viewModel: viewModel)
+                EntryDetailView(entry: entry)
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {

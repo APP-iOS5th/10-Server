@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct WelcomeView: View {
-    @ObservedObject var viewModel: EntryViewModel
+    @EnvironmentObject var viewModel: EntryViewModel
+    
     @State private var showingLoginView = false
     
     var body: some View {
@@ -52,7 +53,7 @@ struct WelcomeView: View {
             .padding()
             .navigationTitle("Welcome")
             .navigationDestination(isPresented: $showingLoginView) {
-                LoginView(viewModel: viewModel)
+                LoginView()
             }
         }
     }

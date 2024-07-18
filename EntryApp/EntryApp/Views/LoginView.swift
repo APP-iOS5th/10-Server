@@ -8,15 +8,19 @@
 import SwiftUI
 
 struct LoginView: View {
-    @ObservedObject var viewModel: EntryViewModel
+    @Environment(\.dismiss) var dismiss
+
+    @EnvironmentObject var viewModel: EntryViewModel
+
     @State private var username = ""
     @State private var password = ""
-    @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
         VStack(spacing: 20) {
             TextField("Username", text: $username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
             
             SecureField("Password", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -30,7 +34,7 @@ struct LoginView: View {
         .navigationTitle("Log in")
         .onChange(of: viewModel.isLoggedIn) {
             if viewModel.isLoggedIn {
-                presentationMode.wrappedValue.dismiss()
+                dismiss()
             }
         }
     }

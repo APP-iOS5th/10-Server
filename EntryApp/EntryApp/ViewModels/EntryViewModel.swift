@@ -35,13 +35,18 @@ class EntryViewModel: ObservableObject {
                     case .failure(let error):
                         // 로그인 실패 시 에러 처리
                         print("Login failed: \(error.localizedDescription)")
-                        self?.isLoggedIn = false
+                        DispatchQueue.main.async {
+                            self?.isLoggedIn = false
+                        }
                     }
                 },
                 receiveValue: { [weak self] (token: String) in
                     // 로그인 성공 시 isLoggedIn을 true로 설정
-                    self?.isLoggedIn = true
+                    DispatchQueue.main.async {
+                        self?.isLoggedIn = true
+                    }
                     print("Login successful. Token: \(token)")
+                        
                 }
             )
             .store(in: &cancellables)
@@ -50,8 +55,10 @@ class EntryViewModel: ObservableObject {
     // 로그아웃 기능
     func logout() {
         // 로그아웃 시 isLoggedIn을 false로 설정하고 엔트리 목록을 비웁니다.
-        isLoggedIn = false
-        entries = []
+        DispatchQueue.main.async { [weak self] in
+            self?.isLoggedIn = false
+            self?.entries = []
+        }
     }
 
     // 엔트리 목록 가져오기 기능
@@ -59,7 +66,9 @@ class EntryViewModel: ObservableObject {
         service.fetchEntries()
             .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] fetchedEntries in
                 // 가져온 엔트리 목록으로 entries를 업데이트합니다.
-                self?.entries = fetchedEntries
+                DispatchQueue.main.async {
+                    self?.entries = fetchedEntries
+                }
             })
             .store(in: &cancellables)
     }
@@ -69,7 +78,9 @@ class EntryViewModel: ObservableObject {
         service.createEntry(title: title, content: content)
             .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] newEntry in
                 // 새로 생성된 엔트리를 entries 배열에 추가합니다.
-                self?.entries.append(newEntry)
+                DispatchQueue.main.async {
+                    self?.entries.append(newEntry)
+                }
             })
             .store(in: &cancellables)
     }
@@ -81,7 +92,9 @@ class EntryViewModel: ObservableObject {
                 receiveCompletion: { _ in },
                 receiveValue: { [weak self] (updatedEntry: Entry) in
                     if let index = self?.entries.firstIndex(where: { $0.id == updatedEntry.id }) {
-                        self?.entries[index] = updatedEntry
+                        DispatchQueue.main.async {
+                            self?.entries[index] = updatedEntry
+                        }
                     }
                 }
             )
@@ -93,7 +106,9 @@ class EntryViewModel: ObservableObject {
         service.deleteEntry(entry)
             .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] in
                 // 삭제된 엔트리를 entries 배열에서 제거합니다.
-                self?.entries.removeAll { $0.id == entry.id }
+                DispatchQueue.main.async {
+                    self?.entries.removeAll { $0.id == entry.id }
+                }
             })
             .store(in: &cancellables)
     }

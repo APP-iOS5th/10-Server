@@ -12,8 +12,8 @@ import Combine
 // RealEntryService: EntryService 프로토콜을 실제로 구현한 클래스입니다.
 // 이 클래스는 실제 서버와 통신하여 데이터를 주고받습니다.
 class RealEntryService: EntryService {
-    // 서버의 기본 URL입니다. 실제 서버 주소로 변경해야 합니다.
-    private let baseURL = "https://api.example.com"
+    // 서버의 기본 URL입니다.
+    private let baseURL = "http://127.0.0.1:8080/api"
     // URLSession 인스턴스입니다. 네트워크 요청에 사용됩니다.
     private let session: URLSession
     // 현재 인증 토큰을 저장합니다. 로그인 후 설정되며, 이후 요청에 사용됩니다.
@@ -51,18 +51,29 @@ class RealEntryService: EntryService {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+        print("-----1------\(url)")
+
         // 로그인 정보를 JSON으로 인코딩합니다.
-        let body = ["username": username, "password": password]
+        let body = ["name": username, "password": password]
         request.httpBody = try? JSONEncoder().encode(body)
 
         return session.dataTaskPublisher(for: request)
-            .map(\.data)
-            .decode(type: LoginResponse.self, decoder: JSONDecoder())
-            .map { response -> String in
-                self.authToken = response.token // 받은 토큰을 저장합니다.
-                return response.token
+            .tryMap { data, response -> String in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      200..<300 ~= httpResponse.statusCode else {
+                    throw URLError(.badServerResponse)
+                }
+                
+                guard let token = String(data: data, encoding: .utf8) else {
+                    throw URLError(.cannotParseResponse)
+                }
+                
+                return token
             }
+            .handleEvents(receiveOutput: { [weak self] token in
+                print("Received token: \(token)")
+                self?.authToken = token // 받은 토큰을 저장합니다.
+            })
             .eraseToAnyPublisher()
     }
 
