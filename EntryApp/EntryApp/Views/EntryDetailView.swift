@@ -9,17 +9,16 @@ import SwiftUI
 
 struct EntryDetailView: View {
     @Environment(\.dismiss) var dismiss
-    @State var entry: Entry
     @EnvironmentObject var viewModel: EntryViewModel
     
     var body: some View {
         Form {
-            TextField("Title", text: $entry.title)
-            TextEditor(text: $entry.content)
+            TextField("Title", text: $viewModel.selectedEntry.title)
+            TextEditor(text: $viewModel.selectedEntry.content)
         }
-        .navigationTitle(entry.title)
+        .navigationTitle(viewModel.selectedEntry.title)
         .navigationBarItems(trailing: Button("Save") {
-            viewModel.updateEntry(entry)
+            viewModel.updateEntry(viewModel.selectedEntry)
             dismiss()
         })
     }

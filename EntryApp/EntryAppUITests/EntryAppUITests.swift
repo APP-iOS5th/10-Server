@@ -7,18 +7,25 @@
 
 import XCTest
 
+@testable import EntryApp
 
 class EntryAppUITests: XCTestCase {
     let app = XCUIApplication()
 
     override func setUpWithError() throws {
         continueAfterFailure = false
+        
+        // 앱 실행 시 TokenManager 초기화를 위한 launch argument 추가
+        app.launchArguments.append("--uitesting")
+
         app.launch()
     }
-
+    
+    
     func testLoginFlow() throws {
         // "Have an account already? Log in." 버튼을 탭합니다.
         let loginButton = app.buttons["Have an account already? Log in."]
+        XCTAssertTrue(loginButton.waitForExistence(timeout: 5))
         loginButton.tap()
 
         // 사용자 이름과 비밀번호를 입력합니다.

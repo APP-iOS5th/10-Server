@@ -14,6 +14,9 @@ class EntryViewModel: ObservableObject {
     @Published var entries: [Entry] = []
     // 로그인 상태를 저장하고 변경을 관찰할 수 있는 @Published 프로퍼티
     @Published var isLoggedIn = false
+    // 선택된 Entry 객체
+    var selectedEntry: Entry = Entry(title: "", content: "")
+    
     // EntryService 프로토콜을 따르는 서비스 객체
     private var service: EntryService
     // Combine 구독을 저장하는 Set
@@ -22,6 +25,23 @@ class EntryViewModel: ObservableObject {
     // 생성자: EntryService를 주입받아 초기화합니다.
     init(service: EntryService) {
         self.service = service
+        
+        // UI 테스트가 아닐 때만 로그인 상태 확인
+        if !ProcessInfo.processInfo.arguments.contains("--uitesting") {
+            checkLoginStatus()
+        }
+    
+    }
+    
+    // 로그인 상태 확인
+    private func checkLoginStatus() {
+        if let token = TokenManager.shared.getToken() {
+            print(token)
+            service.setAuthToken(token)
+            DispatchQueue.main.async {
+                self.isLoggedIn = true
+            }
+        }
     }
 
     // 로그인 기능
@@ -43,6 +63,8 @@ class EntryViewModel: ObservableObject {
                 receiveValue: { [weak self] (token: String) in
                     // 로그인 성공 시 isLoggedIn을 true로 설정
                     DispatchQueue.main.async {
+                        self?.service.setAuthToken(token)
+                        TokenManager.shared.saveToken(token)
                         self?.isLoggedIn = true
                     }
                     print("Login successful. Token: \(token)")
@@ -55,6 +77,7 @@ class EntryViewModel: ObservableObject {
     // 로그아웃 기능
     func logout() {
         // 로그아웃 시 isLoggedIn을 false로 설정하고 엔트리 목록을 비웁니다.
+        TokenManager.shared.deleteToken()
         DispatchQueue.main.async { [weak self] in
             self?.isLoggedIn = false
             self?.entries = []
@@ -93,7 +116,7 @@ class EntryViewModel: ObservableObject {
                 receiveValue: { [weak self] (updatedEntry: Entry) in
                     if let index = self?.entries.firstIndex(where: { $0.id == updatedEntry.id }) {
                         DispatchQueue.main.async {
-                            print("index: \(index)!!!!")
+                            print("index: \(index)!!!! \(updatedEntry.content)")
                             self?.entries[index] = updatedEntry
                         }
                     }

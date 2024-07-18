@@ -25,6 +25,7 @@
 		37F4DC2A2C48A1B300A6C3B4 /* MockEntryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F4DC292C48A1B300A6C3B4 /* MockEntryService.swift */; };
 		37F4DC2D2C48A28000A6C3B4 /* RealEntryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F4DC2C2C48A28000A6C3B4 /* RealEntryService.swift */; };
 		37F4DC322C48CEBB00A6C3B4 /* AddEntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F4DC312C48CEBB00A6C3B4 /* AddEntryView.swift */; };
+		37F4DC352C48D65C00A6C3B4 /* TokenManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F4DC342C48D65C00A6C3B4 /* TokenManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		37F4DC2C2C48A28000A6C3B4 /* RealEntryService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealEntryService.swift; sourceTree = "<group>"; };
 		37F4DC302C48B3AF00A6C3B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		37F4DC312C48CEBB00A6C3B4 /* AddEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryView.swift; sourceTree = "<group>"; };
+		37F4DC342C48D65C00A6C3B4 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,10 +190,19 @@
 		37F4DC2B2C48A1FF00A6C3B4 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				37F4DC332C48D65100A6C3B4 /* Auth */,
 				37F4DC272C48A18E00A6C3B4 /* EntryService.swift */,
 				37F4DC2C2C48A28000A6C3B4 /* RealEntryService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		37F4DC332C48D65100A6C3B4 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				37F4DC342C48D65C00A6C3B4 /* TokenManager.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -332,6 +343,7 @@
 				37F4DBEF2C4898D100A6C3B4 /* ContentView.swift in Sources */,
 				37F4DBED2C4898D100A6C3B4 /* EntryAppApp.swift in Sources */,
 				37F4DC1A2C489B3600A6C3B4 /* LoginRequest.swift in Sources */,
+				37F4DC352C48D65C00A6C3B4 /* TokenManager.swift in Sources */,
 				37F4DC2D2C48A28000A6C3B4 /* RealEntryService.swift in Sources */,
 				37F4DC242C489DFD00A6C3B4 /* EntryDetailView.swift in Sources */,
 				37F4DC202C489B7E00A6C3B4 /* WelcomeView.swift in Sources */,

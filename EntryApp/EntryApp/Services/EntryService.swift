@@ -10,6 +10,8 @@ import Combine
 
 // EntryService 프로토콜: 실제 서비스와 모의 서비스가 구현해야 할 메서드들을 정의합니다.
 protocol EntryService {
+    // 인증 토큰 불러오기
+    func setAuthToken(_ token: String?)
     // 로그인 기능: 사용자 이름과 비밀번호를 받아 토큰을 반환합니다.
     func login(username: String, password: String) -> AnyPublisher<String, Error>
     // 엔트리 목록 가져오기 기능

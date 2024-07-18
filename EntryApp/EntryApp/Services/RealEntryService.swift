@@ -44,6 +44,14 @@ class RealEntryService: EntryService {
     }
 
     // MARK: - EntryService 프로토콜 메서드 구현
+    
+    // 저장된 토큰을 불러옵니다.
+    func setAuthToken(_ token: String?) {
+        if let token = token {
+            authToken = token
+        }
+    }
+
 
     // 로그인 기능을 구현합니다.
     func login(username: String, password: String) -> AnyPublisher<String, Error> {

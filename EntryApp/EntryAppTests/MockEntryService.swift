@@ -17,6 +17,10 @@ class MockEntryService: EntryService {
     // 모의 엔트리 데이터를 저장하는 배열
     var entries: [Entry] = []
 
+    
+    func setAuthToken(_ token: String?) {
+        
+    }
     // 모의 로그인 기능 구현
     func login(username: String, password: String) -> AnyPublisher<String, Error> {
         if shouldSucceed {

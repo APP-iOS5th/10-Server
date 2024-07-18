@@ -24,7 +24,8 @@ struct EntryListView: View {
             }
             .navigationTitle("Entries")
             .navigationDestination(for: Entry.self) { entry in
-                EntryDetailView(entry: entry)
+                viewModel.selectedEntry = entry
+                return EntryDetailView()
             }
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
