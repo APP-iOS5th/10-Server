@@ -31,6 +31,16 @@ class MockEntryService: EntryService {
             return Fail(error: NSError(domain: "Login", code: 401, userInfo: nil)).eraseToAnyPublisher()
         }
     }
+    
+    func loginWithApple(code: String, idToken: String) -> AnyPublisher<String, Error> {
+        if shouldSucceed {
+            // 성공 시 모의 토큰 반환
+            return Just("mock_token").setFailureType(to: Error.self).eraseToAnyPublisher()
+        } else {
+            // 실패 시 에러 반환
+            return Fail(error: NSError(domain: "Login", code: 401, userInfo: nil)).eraseToAnyPublisher()
+        }
+    }
 
     // 모의 엔트리 목록 가져오기 기능 구현
     func fetchEntries() -> AnyPublisher<[Entry], Error> {

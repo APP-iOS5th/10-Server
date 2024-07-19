@@ -66,11 +66,40 @@ class EntryViewModel: ObservableObject {
                         self?.service.setAuthToken(token)
                         TokenManager.shared.saveToken(token)
                         self?.isLoggedIn = true
-                    }                        
+                    }
                 }
             )
             .store(in: &cancellables)
     }
+    
+    
+    func loginWithApple(code: String, idToken: String) {
+        service.loginWithApple(code: code, idToken: idToken)
+            .sink(
+                receiveCompletion: { [weak self] (completion: Subscribers.Completion<Error>) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        // 로그인 실패 시 에러 처리
+                        print("Login failed: \(error.localizedDescription)")
+                        DispatchQueue.main.async {
+                            self?.isLoggedIn = false
+                        }
+                    }
+                },
+                receiveValue: { [weak self] (token: String) in
+                    // 로그인 성공 시 isLoggedIn을 true로 설정
+                    DispatchQueue.main.async {
+                        self?.service.setAuthToken(token)
+                        TokenManager.shared.saveToken(token)
+                        self?.isLoggedIn = true
+                    }
+                }
+            )
+            .store(in: &cancellables)
+    }
+
 
     // 로그아웃 기능
     func logout() {

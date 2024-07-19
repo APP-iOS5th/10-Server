@@ -69,6 +69,7 @@
 		37F4DC302C48B3AF00A6C3B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		37F4DC312C48CEBB00A6C3B4 /* AddEntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEntryView.swift; sourceTree = "<group>"; };
 		37F4DC342C48D65C00A6C3B4 /* TokenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenManager.swift; sourceTree = "<group>"; };
+		37F4DC362C48F7F500A6C3B4 /* EntryApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EntryApp.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +120,7 @@
 		37F4DBEB2C4898D100A6C3B4 /* EntryApp */ = {
 			isa = PBXGroup;
 			children = (
+				37F4DC362C48F7F500A6C3B4 /* EntryApp.entitlements */,
 				37F4DC302C48B3AF00A6C3B4 /* Info.plist */,
 				37F4DBEC2C4898D100A6C3B4 /* EntryAppApp.swift */,
 				37F4DC162C489AD400A6C3B4 /* Models */,
@@ -509,6 +511,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EntryApp/EntryApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EntryApp/Preview Content\"";
@@ -539,6 +542,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = EntryApp/EntryApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"EntryApp/Preview Content\"";

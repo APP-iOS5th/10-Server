@@ -82,6 +82,35 @@ class RealEntryService: EntryService {
             })
             .eraseToAnyPublisher()
     }
+    
+    func loginWithApple(code: String, idToken: String) -> AnyPublisher<String, Error> {
+        let url = URL(string: "http://127.0.0.1:8080/auth/apple")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        // 로그인 정보를 JSON으로 인코딩합니다.
+        let body = ["code": code, "id_token": idToken]
+        request.httpBody = try? JSONEncoder().encode(body)
+
+        return session.dataTaskPublisher(for: request)
+            .tryMap { data, response -> String in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      200..<300 ~= httpResponse.statusCode else {
+                    throw URLError(.badServerResponse)
+                }
+                
+                guard let token = String(data: data, encoding: .utf8) else {
+                    throw URLError(.cannotParseResponse)
+                }
+                
+                return token
+            }
+            .handleEvents(receiveOutput: { [weak self] token in
+                self?.authToken = token // 받은 토큰을 저장합니다.
+            })
+            .eraseToAnyPublisher()
+    }
 
     // 엔트리 목록을 가져오는 기능을 구현합니다.
     func fetchEntries() -> AnyPublisher<[Entry], Error> {

@@ -14,6 +14,8 @@ protocol EntryService {
     func setAuthToken(_ token: String?)
     // 로그인 기능: 사용자 이름과 비밀번호를 받아 토큰을 반환합니다.
     func login(username: String, password: String) -> AnyPublisher<String, Error>
+    // 애플 로그인
+    func loginWithApple(code: String, idToken: String) -> AnyPublisher<String, Error>
     // 엔트리 목록 가져오기 기능
     func fetchEntries() -> AnyPublisher<[Entry], Error>
     // 새 엔트리 생성 기능
